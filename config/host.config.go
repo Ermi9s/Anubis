@@ -33,6 +33,7 @@ func loadConfig(path string) (*model.Configuration, error) {
 
 func selectQueue(cfg *model.Configuration, repository *repository.Repository) {
 	if(cfg.RabbitMQ != nil) {
+		log.Panicln("[Anubis] About to run rabbit")
 		go StartRabbitMQConsumer(cfg, repository)	
 	}
 	// add others when its time 
