@@ -1,8 +1,8 @@
 package config
 
 import (
-	"anubis/internal/model"
-	"anubis/internal/repository"
+	"github.com/Ermi9s/Anubis/internal/model"
+	"github.com/Ermi9s/Anubis/internal/repository"
 	"encoding/json"
 	"os"
 	"os/signal"

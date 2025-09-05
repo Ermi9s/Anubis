@@ -1,4 +1,4 @@
-module anubis
+module github.com/Ermi9s/Anubis
 
 go 1.24.6
 
