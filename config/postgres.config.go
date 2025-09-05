@@ -17,6 +17,8 @@ type PostgresDb struct {
 
 func ConnectPostgres(cfg *model.Configuration) (*pgxpool.Pool, error) {
     connString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=%s", cfg.Postgres.Host, cfg.Postgres.User, cfg.Postgres.Password, cfg.Postgres.DbName, cfg.Postgres.Port, cfg.Postgres.TimeZone)
+
+	log.Printf("[Anubis] Connection string -> %s", connString)
 	
 	err := RunMigrations(connString, "pg_db/migrations")
 	if err != nil {
