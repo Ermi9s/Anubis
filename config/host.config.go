@@ -90,12 +90,16 @@ func HostConfig(configPath string) {
 			pgDatabase := NewPostgresDb(pgxp)
 			repository := repository.NewRepository(pgDatabase)
 			
+
+			log.Println("[Anubis] work group 1 added")
 			workGroup.Add(1)
 			go func () {
 				defer workGroup.Done()
 				startRpc(repository)
 			}()
-			
+
+
+			log.Println("[Anubis] work group 2 added")			
 			workGroup.Add(2)
 			go func () {
 				defer workGroup.Done()
