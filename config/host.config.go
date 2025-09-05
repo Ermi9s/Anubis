@@ -1,19 +1,20 @@
 package config
 
 import (
-	"github.com/Ermi9s/Anubis/model"
-	"github.com/Ermi9s/Anubis/repository"
-	"github.com/Ermi9s/Anubis/rpcserver"
 	"fmt"
 	"log"
 	"net"
 	"net/rpc"
 	"os"
+	"sync"
 
+	"github.com/Ermi9s/Anubis/model"
+	"github.com/Ermi9s/Anubis/repository"
+	"github.com/Ermi9s/Anubis/rpcserver"
 	"gopkg.in/yaml.v3"
 )
 
-
+var workGroup sync.WaitGroup
 
 func loadConfig(path string) (*model.Configuration, error) {
     file, err := os.ReadFile(path)
@@ -33,8 +34,7 @@ func loadConfig(path string) (*model.Configuration, error) {
 
 func selectQueue(cfg *model.Configuration, repository *repository.Repository) {
 	if(cfg.RabbitMQ != nil) {
-		log.Println("[Anubis] About to run rabbit")
-		go StartRabbitMQConsumer(cfg, repository)	
+		StartRabbitMQConsumer(cfg, repository)	
 	}
 	// add others when its time 
 
@@ -90,13 +90,23 @@ func HostConfig(configPath string) {
 			pgDatabase := NewPostgresDb(pgxp)
 			repository := repository.NewRepository(pgDatabase)
 			
-			log.Println("[Anubis] repository initialized successfully!!!")
-			go startRpc(repository)
-			selectQueue(cfg, repository)
+			workGroup.Add(1)
+			go func () {
+				defer workGroup.Done()
+				startRpc(repository)
+			}()
+			
+			workGroup.Add(2)
+			go func () {
+				defer workGroup.Done()
+				selectQueue(cfg, repository)
+			}()
 			
 		default:
 			log.Fatalln("[Anubis Error] The selected database is not supported")
 	}
+
+	workGroup.Wait()
 }
 
 
