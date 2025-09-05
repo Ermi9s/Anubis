@@ -90,6 +90,7 @@ func HostConfig(configPath string) {
 			pgDatabase := NewPostgresDb(pgxp)
 			repository := repository.NewRepository(pgDatabase)
 			
+			log.Println("[Anubis] repository initialized successfully!!!")
 			go startRpc(repository)
 			selectQueue(cfg, repository)
 			
