@@ -1,8 +1,8 @@
 package rpcserver
 
 import (
-	"github.com/Ermi9s/Anubis/internal/model"
-	"github.com/Ermi9s/Anubis/internal/repository"
+	"github.com/Ermi9s/Anubis/model"
+	"github.com/Ermi9s/Anubis/repository"
 	"time"
 )
 

@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/Ermi9s/Anubis/internal/model"
+	"github.com/Ermi9s/Anubis/model"
 	"context"
 	"fmt"
 	"log"

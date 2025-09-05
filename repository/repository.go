@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/Ermi9s/Anubis/internal/model"
+import "github.com/Ermi9s/Anubis/model"
 
 
 type Repository struct {
