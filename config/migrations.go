@@ -2,6 +2,7 @@ package config
 
 import (
 	"embed"
+	"log"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -19,10 +20,15 @@ func RunMigrations(dbURL string) error {
 	}
 
 	// Create migrate instance from iofs source
+	log.Printf("driver created: %s", d)
+
+
 	m, err := migrate.NewWithSourceInstance("iofs", d, dbURL)
 	if err != nil {
 		return err
 	}
+
+	log.Println("migrate instance")
 
 	// Run "up" migrations
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
