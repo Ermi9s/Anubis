@@ -3,6 +3,8 @@ package repository
 import "github.com/Ermi9s/Anubis/model"
 
 
+
+
 type Repository struct {
 	DB model.DataBase
 }
