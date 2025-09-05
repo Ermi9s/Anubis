@@ -25,7 +25,7 @@ func ConnectPostgres(cfg *model.Configuration) (*pgxpool.Pool, error) {
 		cfg.Postgres.DbName,
 	)
 
-	log.Panicln("Bug fix")
+
 	log.Printf("[Anubis] Connection string ->>> %s", connString)
 
 	err := RunMigrations(connString, "pg_db/migrations")
