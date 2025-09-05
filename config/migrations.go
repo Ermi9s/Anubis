@@ -20,20 +20,19 @@ func RunMigrations(dbURL string) error {
 	}
 
 	// Create migrate instance from iofs source
-	log.Printf("driver created: %s", d)
-
 
 	m, err := migrate.NewWithSourceInstance("iofs", d, dbURL)
 	if err != nil {
 		return err
 	}
 
-	log.Println("migrate instance")
-
+	
 	// Run "up" migrations
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		return err
 	}
+
+	log.Println("[Anubis] all migration were down!!!")
 
 	return nil
 }
