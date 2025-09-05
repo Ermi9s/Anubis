@@ -1,32 +1,30 @@
 package config
 
 import (
-	"errors"
-	"log"
-
+	"embed"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/golang-migrate/migrate/v4/source/iofs"
 )
 
-func RunMigrations(dbURL, migrationsPath string) error {
-	m, err := migrate.New("file://"+migrationsPath, dbURL)
+var migrationsFS embed.FS
+
+
+func RunMigrations(dbURL string) error {
+	d, err := iofs.New(migrationsFS, "pg_db/migrations")
 	if err != nil {
 		return err
 	}
 
-	if err := m.Up(); err != nil && !errors.Is(err, migrate.ErrNoChange) {
+	m, err := migrate.NewWithSourceInstance("iofs", d, dbURL)
+	if err != nil {
 		return err
 	}
 
-	srcErr, dbErr := m.Close()
-	if srcErr != nil {
-		return srcErr
-	}
-	if dbErr != nil {
-		return dbErr
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		return err
 	}
 
-	log.Println("[Anubis] Migrations applied successfully")
 	return nil
 }

@@ -15,6 +15,8 @@ type PostgresDb struct {
 	Client *pgxpool.Pool
 }
 
+
+
 func ConnectPostgres(cfg *model.Configuration) (*pgxpool.Pool, error) {
 	connString := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
@@ -28,7 +30,7 @@ func ConnectPostgres(cfg *model.Configuration) (*pgxpool.Pool, error) {
 
 	log.Printf("[Anubis] Connection string ->>> %s", connString)
 
-	err := RunMigrations(connString, "pg_db/migrations")
+	err := RunMigrations(connString)
 	if err != nil {
 		log.Fatalf("[Anubis Error] failed to run migrations: %s", err)
 	}
