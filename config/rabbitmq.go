@@ -75,7 +75,7 @@ func StartRabbitMQConsumer(configuration *model.Configuration, repository *repos
 		log.Fatalf("[Anubis Error] failed to register consume: %s", err)
 	}
 
-	log.Printf("[Anubis] Waiting for messages from queue %s", configuration.RabbitMQ.QueueName)
+	log.Printf("[Anubis] Waiting for messages from queue %s, number of workers %d", configuration.RabbitMQ.QueueName, workers)
 
 
 	var wg sync.WaitGroup
@@ -85,6 +85,7 @@ func StartRabbitMQConsumer(configuration *model.Configuration, repository *repos
 		wg.Add(1)
 		go func(workerID int) {
 			defer wg.Done()
+			log.Printf("[Anubis] Worker %d deployed", workerID)
 			for msg := range messages {
 				var event model.AuditEvent
 				if err := json.Unmarshal(msg.Body, &event); err != nil {

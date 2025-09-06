@@ -32,7 +32,7 @@ func RunMigrations(dbURL string) error {
 		return err
 	}
 
-	log.Println("[Anubis] all migration were down!!!")
+	log.Println("[Anubis] all migration are up!!!")
 
 	return nil
 }
