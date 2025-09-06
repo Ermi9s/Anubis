@@ -54,6 +54,7 @@ func NewPostgresDb(client *pgxpool.Pool) *PostgresDb {
 
 
 func (pg *PostgresDb) CreateEvent(event model.AuditEvent) error {
+	log.Printf("[Anubis] Saving event: %s", event)
 	query := `
 		INSERT INTO audit_event (
 			event_id, timestamp, action, status, actor_id, actor_type,
@@ -75,6 +76,8 @@ func (pg *PostgresDb) CreateEvent(event model.AuditEvent) error {
 		event.Details,
 		event.ServiceName,
 	)
+
+	log.Printf("[Anubis] Saved event success: %s", event)
 	return err
 }
 

@@ -101,6 +101,7 @@ func StartRabbitMQConsumer(configuration *model.Configuration, repository *repos
 					continue
 				}
 
+				log.Printf("[Anubis] recieved message %s", event)
 				msg.Ack(false) 
 			}
 		}(i)
