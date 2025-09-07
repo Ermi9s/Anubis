@@ -77,8 +77,12 @@ func (pg *PostgresDb) CreateEvent(event model.AuditEvent) error {
 		event.ServiceName,
 	)
 
+	if err != nil {
+		log.Printf("[Anibis Error] Error while saving to database: %s", err)
+		return  err
+	}
 	log.Printf("[Anubis] Saved event success: %s", event)
-	return err
+	return nil
 }
 
 

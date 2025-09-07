@@ -88,13 +88,11 @@ func StartRabbitMQConsumer(configuration *model.Configuration, repository *repos
 			log.Printf("[Anubis] Worker %d deployed -> ", workerID)
 			for msg := range messages {
 				var event model.AuditEvent
-				log.Printf("[Anubis] Worker %d received message: %s", workerID, string(msg.Body))
 				if err := json.Unmarshal(msg.Body, &event); err != nil {
 					log.Printf("[Anubis Error] Worker %d: Error decoding message: %v", workerID, err)
 					msg.Nack(false, false) 
 					continue
 				}
-
 
 				if err := repository.CreateAudit(event); err != nil {
 					log.Printf("[Anubis Error] Worker %d: Error Saving message: %v to database", workerID, err)
@@ -102,7 +100,7 @@ func StartRabbitMQConsumer(configuration *model.Configuration, repository *repos
 					continue
 				}
 
-				log.Printf("[Anubis] recieved message %s", event)
+				log.Printf("[Anubis] Worker %d received message: %s", workerID, string(msg.Body))
 				msg.Ack(false) 
 			}
 		}(i)
