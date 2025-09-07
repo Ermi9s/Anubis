@@ -19,20 +19,28 @@ func RunMigrations(dbURL string) error {
 		return err
 	}
 
-	// Create migrate instance from iofs source
-
 	m, err := migrate.NewWithSourceInstance("iofs", d, dbURL)
 	if err != nil {
 		return err
 	}
 
-	
-	// Run "up" migrations
+	defer func() {
+		srcErr, dbErr := m.Close()
+		if srcErr != nil {
+			log.Printf("[Anubis] migration source close error: %v", srcErr)
+		}
+		if dbErr != nil {
+			log.Printf("[Anubis] migration db close error: %v", dbErr)
+		}
+	}()
+
+	log.Printf("[Anubis] running migrations on %s", dbURL)
+
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		return err
 	}
 
-	log.Println("[Anubis] all migration are up!!!")
-
+	log.Println("[Anubis] all migrations are up!!!")
 	return nil
 }
+

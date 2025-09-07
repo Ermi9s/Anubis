@@ -85,9 +85,10 @@ func StartRabbitMQConsumer(configuration *model.Configuration, repository *repos
 		wg.Add(1)
 		go func(workerID int) {
 			defer wg.Done()
-			log.Printf("[Anubis] Worker %d deployed", workerID)
+			log.Printf("[Anubis] Worker %d deployed -> ", workerID)
 			for msg := range messages {
 				var event model.AuditEvent
+				log.Printf("[Anubis] Worker %d received message: %s", workerID, string(msg.Body))
 				if err := json.Unmarshal(msg.Body, &event); err != nil {
 					log.Printf("[Anubis Error] Worker %d: Error decoding message: %v", workerID, err)
 					msg.Nack(false, false) 
