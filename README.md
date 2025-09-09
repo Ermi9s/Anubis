@@ -87,6 +87,10 @@ After configuring Anubis, integrate it into your Go application and use the CLI 
 
 ### Integrating Anubis into a Service
 
+```bash
+go get github.com/Ermi9s/Anubis/config 
+```
+
 To use Anubis, import the package and initialize it with the path to your configuration YAML file.
 
 ```go
